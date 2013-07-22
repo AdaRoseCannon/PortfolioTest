@@ -1,0 +1,12 @@
+{
+  "name": "portfolio",
+  "description": "My portfolio website",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+  	"browserify-express": "*",
+    "docMagic": "git://github.com/AdaRoseEdwards/docMagic.git#master",
+    "express": "3.x",
+    "node-gd": "*"
+  }
+}

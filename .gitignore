@@ -1,0 +1,25 @@
+#       Other Modules       #
+# Install using npm install #
+#############################
+node_modules/
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# Authorization data #
+######################
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+*~
