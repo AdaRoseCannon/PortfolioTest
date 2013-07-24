@@ -3,7 +3,6 @@
  * GET home page.
  */
 var fs = require('fs');
-var browserify = require('browserify');
 var gd   = require('node-gd');
 
 exports.index = function(req, res){
@@ -40,14 +39,14 @@ exports.generate = function(req, res){
 		fs.mkdirSync(targetFolder);
 	}
 
-	gd.openJpg(inputFile,
-		function(Jpg, path) {
-		    if(Jpg) {
-		        var w = Math.floor(Jpg.width/2), h = Math.floor(Jpg.height/2);
-		        var target_Jpg = gd.createTrueColor(w, h);
+	gd.openJpeg(inputFile,
+		function(Jpeg, path) {
+		    if(Jpeg) {
+		        var w = Math.floor(Jpeg.width/2), h = Math.floor(Jpeg.height/2);
+		        var target_Jpeg = gd.createTrueColor(w, h);
 
-		        Jpg.copyResampled(target_Jpg,0,0,0,0,w,h,Jpg.width,Jpg.height);
-		        target_Jpg.saveJpg(target, 1, gd.noop);
+		        Jpeg.copyResampled(target_Jpeg,0,0,0,0,w,h,Jpeg.width,Jpeg.height);
+		        target_Jpeg.saveJpeg(target, 80);
 		    }
 		}
 	);
