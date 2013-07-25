@@ -32,25 +32,29 @@ exports.generate = function(req, res){
 	var folder, file;
 	folder = req.query.folder;
 	file = req.query.file;
-	var inputFile = __dirname + "/../data/raw/" + folder + "/" + file;
-	var target = __dirname + "/../data/thumbs/" + folder + "/" + file;
-	var targetFolder = __dirname + "/../data/thumbs/" + folder;
+	var rootPath = fs.realpathSync(__dirname + "/../data/");
+	var targetFolder = rootPath + "/thumbs/" + folder;
+	var inputFile = rootPath + "/raw/" + folder + "/" + file;
+	var target = targetFolder + "/" + file;
 
 	if (!fs.existsSync(targetFolder)){
 		fs.mkdirSync(targetFolder);
 	}
+	console.log (inputFile);
+	var Jpeg = gd.openJpeg(inputFile);
+	console.log (Jpeg);
+	if(Jpeg) {
+		console.log ("Lemonade");
 
-	gd.openJpg(inputFile,
-		function(Jpg, path) {
-		    if(Jpg) {
-		        var w = Math.floor(Jpg.width/2), h = Math.floor(Jpg.height/2);
-		        var target_Jpg = gd.createTrueColor(w, h);
+	    var w = Math.floor(Jpeg.width/2), h = Math.floor(Jpeg.height/2);
 
-		        Jpg.copyResampled(target_Jpg,0,0,0,0,w,h,Jpg.width,Jpg.height);
-		        target_Jpg.saveJpg(target, 1, gd.noop);
-		    }
-		}
-	);
+	    var thumb = gd.createTrueColor(w, h);
 
-	res.json({text: "Hello World"});
+	    Jpeg.copyResampled(thumb, 0, 0, 0, 0, w, h, Jpeg.width, Jpeg.height);
+
+	    thumb.saveJpeg(target, 80);
+
+		res.json({file: target, success: fs.existsSync(target)});
+
+	}
 };

@@ -7,6 +7,6 @@
   	"browserify-express": "*",
     "docMagic": "git://github.com/AdaRoseEdwards/docMagic.git#master",
     "express": "3.x",
-    "node-gd": "*"
+    "node-gd": "git://github.com/mikesmullin/node-gd.git#stable"
   }
 }

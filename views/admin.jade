@@ -1,0 +1,14 @@
+extends adminlayout
+block content
+	- if (folder != "")
+		h1=folder
+	- each file in files
+		- if (file.isDirectory)
+				a(href="/admin?folder="+file.name)
+					p=file.name
+		- if (file.isFile)
+			-if (file.thumbExists)
+				p=file.name
+			- else
+				a(href="/generate?folder="+folder+"&file="+file.name)
+					p=file.name
