@@ -3,7 +3,6 @@
  * GET home page.
  */
 var fs = require('fs');
-var browserify = require('browserify');
 var gd   = require('node-gd');
 
 exports.index = function(req, res){
@@ -45,7 +44,6 @@ exports.generate = function(req, res){
 	console.log (Jpeg);
 	if(Jpeg) {
 		console.log ("Lemonade");
-
 	    var w = Math.floor(Jpeg.width/2), h = Math.floor(Jpeg.height/2);
 
 	    var thumb = gd.createTrueColor(w, h);
