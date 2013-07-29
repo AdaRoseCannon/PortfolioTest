@@ -31,18 +31,16 @@ exports.admin = function(req, res){
 };
 
 exports.generate = function(req, res){
-	var options = require (rootPath + "/options.JSON");
+	var folder = req.query.folder.toLowerCase();
+	var file = req.query.file;
 	var rootPath = fs.realpathSync(__dirname + "/../data/");
+	var options = require (rootPath + "/options.json");
 	var targetFolder = rootPath + "/thumbs/" + folder;
 	var inputFile = rootPath + "/raw/" + folder + "/" + file;
 	var dataFile = targetFolder + "/" + "index.json";
 	var target = targetFolder + "/" + file.toLowerCase();
 	var largeName = target.replace(/(\.[\w\d_-]+)$/i, '_large$1');
 	var watermark = rootPath + "/watermark.png"
-	var folder, file;
-
-	folder = req.query.folder.toLowerCase();
-	file = req.query.file;
 
 	if (!fs.existsSync(targetFolder)){
 		fs.mkdirSync(targetFolder);
@@ -81,12 +79,14 @@ exports.generate = function(req, res){
 		//.drawText(20, 30, "GMagick!", "Center")
 		.write(largeName, function (err) {
 			if (!err) {
-				console.log('done: '+ inputFile);
-				fs.readFile(target, function(err, original_data){
-					var data = original_data.toString('base64');
-				    currentData[file.toLowerCase()].large=data;
+				exec("composite -dissolve 40% -gravity center " + watermark + "  " + largeName + "  " + largeName, function (error, stdout, stderr) {
+					fs.readFile(target, function(err, original_data){
+						var data = original_data.toString('base64');
+					    currentData[file.toLowerCase()].large=data;
+					    sys.puts(stdout);
+					});
+					console.log('done: '+ largeName);
 				});
-				exec("composite -dissolve 40% -gravity center " + watermark + "  " + largeName + "  " + largeName, puts);
 			} else {
 				console.log({failure: err, vars: {inputFile: inputFile, target: target}});
 			}
