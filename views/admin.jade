@@ -2,13 +2,19 @@ extends adminlayout
 block content
 	- if (folder != "")
 		h1=folder
-	- each file in files
-		- if (file.isDirectory)
-				a(href="/admin?folder="+file.name)
-					p=file.name
-		- if (file.isFile)
-			-if (file.thumbExists)
-				p=file.name
-			- else
-				a.generateLink(data-value="/generate?folder="+folder+"&file="+file.name, href="#")
-					p=file.name
+	div.row
+		- each file in files
+			div.col-lg-3
+				div.thumbnail
+					- if (file.isDirectory)
+							a(href="/admin?folder="+file.name)
+								img(data-src="holder.js/300x200")
+								p=file.name
+					- if (file.isFile)
+						-if (file.thumbExists)
+							img(data-src="holder.js/300x200")
+							p=file.name
+						- else
+							a.generateLink(data-value="/generate?folder="+folder+"&file="+file.name, href="#")
+								img(data-src="holder.js/300x200")
+								p=file.name
