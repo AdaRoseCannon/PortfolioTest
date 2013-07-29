@@ -4,6 +4,9 @@
  */
 var fs = require('fs');
 var gm   = require('gm');
+var sys = require('sys')
+var exec = require('child_process').exec;
+function puts(error, stdout, stderr) { sys.puts(stdout) }
 
 exports.index = function(req, res){
 	res.render('index', { title: 'Portfolio Site' });
@@ -36,6 +39,8 @@ exports.generate = function(req, res){
 	var inputFile = rootPath + "/raw/" + folder + "/" + file;
 	var dataFile = targetFolder + "/" + "index.json";
 	var target = targetFolder + "/" + file.toLowerCase();
+	var largeName = target.replace(/(\.[\w\d_-]+)$/i, '_large$1');
+	var watermark = rootPath + "/watermark.png"
 
 	if (!fs.existsSync(targetFolder)){
 		fs.mkdirSync(targetFolder);
@@ -60,27 +65,32 @@ exports.generate = function(req, res){
 
 	currentData[file.toLowerCase()]={};
 
-	gm(inputFile)
+	gm(inputFile).autoOrient()
 	.resize(1536,1152)
 	.noProfile()
 	.size(function (err, size) {
-		this.fill("rgba(128,128,128,0.5)", 1)
+
+		this.fill("rgba(255,255,255,0.5)", 1)
+		.compose("Plus")
 		.drawLine(0, 0, size.width, size.height)
 		.drawLine(0, size.height, size.width, 0)
-		.write(target.replace(/(\.[\w\d_-]+)$/i, '_large$1'), function (err) {
+		.fontSize(56)
+		//.drawText(20, 30, "GMagick!", "Center")
+		.write(largeName, function (err) {
 			if (!err) {
 				console.log('done: '+ inputFile);
 				fs.readFile(target, function(err, original_data){
 					var data = original_data.toString('base64');
 				    currentData[file.toLowerCase()].large=data;
 				});
+				exec("composite -dissolve 40% -gravity center " + watermark + "  " + largeName + "  " + largeName, puts);
 			} else {
-				res.json({failure: err, vars: {inputFile: inputFile, target: target}});
+				console.log({failure: err, vars: {inputFile: inputFile, target: target}});
 			}
 		});
 	});		
 
-	gm(inputFile)
+	gm(inputFile).autoOrient()
 	.noProfile()
 	.resize(240,240)
 	.write(target, function (err) {
@@ -98,7 +108,7 @@ exports.generate = function(req, res){
 			    res.json({success: data});
 			});
 		} else {
-			res.json({failure: err, vars: {inputFile: inputFile, target: target}});
+			console.log({failure: err, vars: {inputFile: inputFile, target: target}});
 		}
 	});
 };
