@@ -31,9 +31,7 @@ exports.admin = function(req, res){
 };
 
 exports.generate = function(req, res){
-	var folder, file;
-	folder = req.query.folder.toLowerCase();
-	file = req.query.file;
+	var options = require (rootPath + "/options.JSON");
 	var rootPath = fs.realpathSync(__dirname + "/../data/");
 	var targetFolder = rootPath + "/thumbs/" + folder;
 	var inputFile = rootPath + "/raw/" + folder + "/" + file;
@@ -41,6 +39,10 @@ exports.generate = function(req, res){
 	var target = targetFolder + "/" + file.toLowerCase();
 	var largeName = target.replace(/(\.[\w\d_-]+)$/i, '_large$1');
 	var watermark = rootPath + "/watermark.png"
+	var folder, file;
+
+	folder = req.query.folder.toLowerCase();
+	file = req.query.file;
 
 	if (!fs.existsSync(targetFolder)){
 		fs.mkdirSync(targetFolder);
@@ -75,6 +77,7 @@ exports.generate = function(req, res){
 		.drawLine(0, 0, size.width, size.height)
 		.drawLine(0, size.height, size.width, 0)
 		.fontSize(56)
+		.quality(options.quality)
 		//.drawText(20, 30, "GMagick!", "Center")
 		.write(largeName, function (err) {
 			if (!err) {
