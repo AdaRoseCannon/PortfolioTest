@@ -10,5 +10,5 @@ block content
 			-if (file.thumbExists)
 				p=file.name
 			- else
-				a(href="/generate?folder="+folder+"&file="+file.name)
+				a.generateLink(data-value="/generate?folder="+folder+"&file="+file.name, href="#")
 					p=file.name

@@ -56,8 +56,10 @@ exports.generate = function(req, res){
 	.noProfile()
 	.write(target, function (err) {
 		if (!err) {
-			console.log('done');
-			res.json({success: true});
+			console.log('done: '+ inputFile);
+			fs.readFile(target, function(err, original_data){
+			    res.json({success: original_data.toString('base64')});
+			});
 		} else {
 			res.json({failure: err, vars: {inputFile: inputFile, target: target}});
 		}
