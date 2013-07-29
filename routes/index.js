@@ -40,7 +40,20 @@ exports.generate = function(req, res){
 	var dataFile = targetFolder + "/" + "index.json";
 	var target = targetFolder + "/" + file.toLowerCase();
 	var largeName = target.replace(/(\.[\w\d_-]+)$/i, '_large$1');
-	var watermark = rootPath + "/watermark.png"
+	var watermark = rootPath + "/watermark.png";
+	var imagesToGen = 2;
+
+	function writeFiles() {
+		imagesToGen--;
+		if(imagesToGen === 0){
+			fs.writeFile(dataFile, JSON.stringify(currentData, null, "\t"), function(err) {
+				if(err) {
+					console.log("Could not save JSON: " + dataFile);
+					console.log(err);
+				}
+			});
+		}
+	}
 
 	if (!fs.existsSync(targetFolder)){
 		fs.mkdirSync(targetFolder);
@@ -84,8 +97,9 @@ exports.generate = function(req, res){
 						var data = original_data.toString('base64');
 					    currentData[file.toLowerCase()].large=data;
 					    sys.puts(stdout);
+						console.log('done: '+ largeName);
+						writeFiles();
 					});
-					console.log('done: '+ largeName);
 				});
 			} else {
 				console.log({failure: err, vars: {inputFile: inputFile, target: target}});
@@ -102,12 +116,7 @@ exports.generate = function(req, res){
 			fs.readFile(target, function(err, original_data){
 				var data = original_data.toString('base64');
 			    currentData[file.toLowerCase()].thumb=data;
-				fs.writeFile(dataFile, JSON.stringify(currentData, null, "\t"), function(err) {
-					if(err) {
-						console.log("Could not save JSON: " + dataFile);
-						console.log(err);
-					}
-				}); 
+				writeFiles();
 			    res.json({success: data});
 			});
 		} else {
