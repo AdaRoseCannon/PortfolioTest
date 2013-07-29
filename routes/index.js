@@ -60,24 +60,29 @@ exports.generate = function(req, res){
 
 	currentData[file.toLowerCase()]={};
 
-	var image = gm(inputFile);
+	gm(inputFile)
+	.resize(1536,1152)
+	.noProfile()
+	.size(function (err, size) {
+		this.fill("rgba(128,128,128,0.5)", 1)
+		.drawLine(0, 0, size.width, size.height)
+		.drawLine(0, size.height, size.width, 0)
+		.write(target.replace(/(\.[\w\d_-]+)$/i, '_large$1'), function (err) {
+			if (!err) {
+				console.log('done: '+ inputFile);
+				fs.readFile(target, function(err, original_data){
+					var data = original_data.toString('base64');
+				    currentData[file.toLowerCase()].large=data;
+				});
+			} else {
+				res.json({failure: err, vars: {inputFile: inputFile, target: target}});
+			}
+		});
+	});		
 
-	image.resize(1536,1152)
+	gm(inputFile)
 	.noProfile()
-	.write(target.replace(/(\.[\w\d_-]+)$/i, '_large$1'), function (err) {
-		if (!err) {
-			console.log('done: '+ inputFile);
-			fs.readFile(target, function(err, original_data){
-				var data = original_data.toString('base64');
-			    currentData[file.toLowerCase()].large=data;
-			});
-		} else {
-			res.json({failure: err, vars: {inputFile: inputFile, target: target}});
-		}
-	});
-	
-	image.resize(240,240)
-	.noProfile()
+	.resize(240,240)
 	.write(target, function (err) {
 		if (!err) {
 			console.log('done: '+ inputFile);
