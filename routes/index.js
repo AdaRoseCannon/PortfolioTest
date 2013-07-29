@@ -3,7 +3,7 @@
  * GET home page.
  */
 var fs = require('fs');
-var gd   = require('node-gd');
+var gm   = require('gm');
 
 exports.index = function(req, res){
 	res.render('index', { title: 'Portfolio Site' });
@@ -29,30 +29,37 @@ exports.admin = function(req, res){
 
 exports.generate = function(req, res){
 	var folder, file;
-	folder = req.query.folder;
+	folder = req.query.folder.toLowerCase();
 	file = req.query.file;
 	var rootPath = fs.realpathSync(__dirname + "/../data/");
 	var targetFolder = rootPath + "/thumbs/" + folder;
 	var inputFile = rootPath + "/raw/" + folder + "/" + file;
-	var target = targetFolder + "/" + file;
+	var target = targetFolder + "/" + file.toLowerCase();
 
 	if (!fs.existsSync(targetFolder)){
 		fs.mkdirSync(targetFolder);
 	}
-	console.log (inputFile);
-	var Jpeg = gd.openJpeg(inputFile);
-	console.log (Jpeg);
-	if(Jpeg) {
-		console.log ("Lemonade");
-	    var w = Math.floor(Jpeg.width/2), h = Math.floor(Jpeg.height/2);
 
-	    var thumb = gd.createTrueColor(w, h);
-
-	    Jpeg.copyResampled(thumb, 0, 0, 0, 0, w, h, Jpeg.width, Jpeg.height);
-
-	    thumb.saveJpeg(target, 80);
-
-		res.json({file: target, success: fs.existsSync(target)});
-
+	if (!fs.existsSync(targetFolder)){
+		res.json({failure: "Invalid folder layout"});
+		throw new Error ("Invalid folder layout");
+		return;
 	}
+
+	if (!fs.existsSync(inputFile)){
+		res.json({failure: "No input file!!!!"});
+		return;
+	}
+
+	gm(inputFile)
+	.resize(240, 240)
+	.noProfile()
+	.write(target, function (err) {
+		if (!err) {
+			console.log('done');
+			res.json({success: true});
+		} else {
+			res.json({failure: err, vars: {inputFile: inputFile, target: target}});
+		}
+	});
 };

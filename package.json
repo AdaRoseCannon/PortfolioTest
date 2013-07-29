@@ -7,7 +7,7 @@
   	"browserify-express": "*",
     "docMagic": "git://github.com/AdaRoseEdwards/docMagic.git#master",
     "express": "3.x",
-    "node-gd": "*",
+    "gm": "*",
     "stylus": "*",
     "jade": "*"
   }
