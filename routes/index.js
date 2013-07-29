@@ -58,16 +58,33 @@ exports.generate = function(req, res){
 		currentData = require(dataFile);
 	}
 
-	gm(inputFile)
-	.resize(240, 240)
+	currentData[file.toLowerCase()]={};
+
+	var image = gm(inputFile);
+
+	image.resize(1536,1152)
+	.noProfile()
+	.write(target.replace(/(\.[\w\d_-]+)$/i, '_large$1'), function (err) {
+		if (!err) {
+			console.log('done: '+ inputFile);
+			fs.readFile(target, function(err, original_data){
+				var data = original_data.toString('base64');
+			    currentData[file.toLowerCase()].large=data;
+			});
+		} else {
+			res.json({failure: err, vars: {inputFile: inputFile, target: target}});
+		}
+	});
+	
+	image.resize(240,240)
 	.noProfile()
 	.write(target, function (err) {
 		if (!err) {
 			console.log('done: '+ inputFile);
 			fs.readFile(target, function(err, original_data){
 				var data = original_data.toString('base64');
-			    currentData[file.toLowerCase()]=data;
-				fs.writeFile(dataFile, JSON.stringify(currentData, null, 4), function(err) {
+			    currentData[file.toLowerCase()].thumb=data;
+				fs.writeFile(dataFile, JSON.stringify(currentData, null, "\t"), function(err) {
 					if(err) {
 						console.log("Could not save JSON: " + dataFile);
 						console.log(err);
