@@ -34,6 +34,7 @@ exports.generate = function(req, res){
 	var rootPath = fs.realpathSync(__dirname + "/../data/");
 	var targetFolder = rootPath + "/thumbs/" + folder;
 	var inputFile = rootPath + "/raw/" + folder + "/" + file;
+	var dataFile = targetFolder + "/" + "index.json";
 	var target = targetFolder + "/" + file.toLowerCase();
 
 	if (!fs.existsSync(targetFolder)){
@@ -51,6 +52,12 @@ exports.generate = function(req, res){
 		return;
 	}
 
+
+	var currentData = {};
+	if (fs.existsSync(dataFile)){
+		currentData = require(dataFile);
+	}
+
 	gm(inputFile)
 	.resize(240, 240)
 	.noProfile()
@@ -58,7 +65,15 @@ exports.generate = function(req, res){
 		if (!err) {
 			console.log('done: '+ inputFile);
 			fs.readFile(target, function(err, original_data){
-			    res.json({success: original_data.toString('base64')});
+				var data = original_data.toString('base64');
+			    currentData[file.toLowerCase()]=data;
+				fs.writeFile(dataFile, JSON.stringify(currentData, null, 4), function(err) {
+					if(err) {
+						console.log("Could not save JSON: " + dataFile);
+						console.log(err);
+					}
+				}); 
+			    res.json({success: data});
 			});
 		} else {
 			res.json({failure: err, vars: {inputFile: inputFile, target: target}});
