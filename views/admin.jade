@@ -12,7 +12,7 @@ block content
 								p=file.name
 					- if (file.isFile)
 						-if (file.thumbExists)
-							img(data-src="holder.js/300x200")
+							img(src="data:image/jpg;base64,"+file.thumb)
 							p=file.name
 						- else
 							a.generateLink(data-value="/generate?folder="+folder+"&file="+file.name, href="#")

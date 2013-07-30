@@ -15,6 +15,16 @@ exports.index = function(req, res){
 exports.admin = function(req, res){
 	var folder = "";
 	if (req.query.folder) folder = req.query.folder;
+
+	var rootPath = fs.realpathSync(__dirname + "/../data/");
+	var targetFolder = rootPath + "/thumbs/" + folder.toLowerCase();
+	var dataFile = targetFolder + "/" + "index.json";
+
+	var currentData = {};
+	if (fs.existsSync(dataFile)){
+		currentData = require(dataFile);
+	}
+
 	var renderVars = {
 		title: 'Portfolio Site',
 		subtitle: 'Admin Page',
@@ -24,7 +34,10 @@ exports.admin = function(req, res){
 	for (var i in ls) {
 		var t = fs.statSync(__dirname + "/../data/raw/" + folder + "/" + ls[i]);
 		ls[i] = {name: ls[i], isFile: t.isFile(), isDirectory: t.isDirectory()};
-		ls[i].thumbExists = false;
+		ls[i].thumbExists = currentData[ls[i].name.toLowerCase()] !== undefined;
+		if (ls[i].thumbExists) {
+			ls[i].thumb = currentData[ls[i].name.toLowerCase()].thumb;
+		}
 	}
 	renderVars.files = ls;
 	res.render('admin', renderVars);
