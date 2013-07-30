@@ -1,7 +1,13 @@
 extends adminlayout
 block content
-	- if (folder != "")
-		h1=folder
+	div.row
+		- if (folder != "")
+			div.col-12.col-lg-6
+				h1=folder
+			div.col-12.col-lg-6
+				div.well.well-large
+					center
+						h3="Drag files here"
 	div.row
 		- each file in files
 			div.col-lg-3

@@ -12,7 +12,7 @@ exports.index = function(req, res){
 	res.render('index', { title: 'Portfolio Site' });
 };
 
-exports.admin = function(req, res, jade){
+exports.admin = function(req, res){
 	var folder = "";
 	if (req.query.folder) folder = req.query.folder;
 
@@ -40,7 +40,6 @@ exports.admin = function(req, res, jade){
 		}
 	}
 	renderVars.files = ls;
-	if (jade !== undefined) res.render(jade, renderVars);
 	res.render('admin', renderVars);
 };
 
