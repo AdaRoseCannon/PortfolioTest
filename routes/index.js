@@ -12,7 +12,7 @@ exports.index = function(req, res){
 	res.render('index', { title: 'Portfolio Site' });
 };
 
-exports.admin = function(req, res){
+exports.admin = function(req, res, jade){
 	var folder = "";
 	if (req.query.folder) folder = req.query.folder;
 
@@ -40,7 +40,25 @@ exports.admin = function(req, res){
 		}
 	}
 	renderVars.files = ls;
+	if (jade !== undefined) res.render(jade, renderVars);
 	res.render('admin', renderVars);
+};
+
+exports.folder = function(req, res){
+	var rootPath = fs.realpathSync(__dirname + "/../data/");
+	var targetFolder = rootPath + "/thumbs/";
+	var dataFile = targetFolder + "/" + "index.json";
+	var renderVars = {
+		title: 'Portfolio Site',
+		subtitle: 'Admin Page'
+	};
+	var ls = fs.readdirSync(__dirname + "/../data/raw/");
+	for (var i in ls) {
+		var t = fs.statSync(__dirname + "/../data/raw/" + ls[i]);
+		ls[i] = {name: ls[i], isFile: t.isFile(), isDirectory: t.isDirectory()};
+	}
+	renderVars.files = ls;
+	res.render('folder', renderVars);
 };
 
 exports.generate = function(req, res){

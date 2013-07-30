@@ -43,9 +43,11 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 
-app.get('/admin', routes.admin)
+app.get('/admin', routes.admin);
 
-app.get('/generate', routes.generate)
+app.get('/folder', routes.folder);
+
+app.get('/generate', routes.generate);
 
 app.get('/users', user.list);
 

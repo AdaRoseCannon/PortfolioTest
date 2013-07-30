@@ -1,0 +1,9 @@
+extends adminlayout
+block content
+	div.row
+		div.col-12.col-lg-7
+			="Content"
+		div.col-12.col-lg-5
+			ul.list-group
+				- each file in files
+					li.list-group-item=file.name
