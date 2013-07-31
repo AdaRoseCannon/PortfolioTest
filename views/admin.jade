@@ -15,11 +15,15 @@ block content
 			h3=subtitle
 			- if (folder != "")
 				hr
-				h1=folder
+				h1
+					=folder+ " "
+					a(href="/admin")
+						span.glyphicon.glyphicon-arrow-left
 		- if (folder != "")
+			br
 			div.col-12.col-lg-6
-					div.well.well-large
-						h3.text-center="Drag files here"
+				div.well.well-large
+					h3.text-center="Drag files here"
 	div.row
 		- each file in files
 			div.col-lg-3
