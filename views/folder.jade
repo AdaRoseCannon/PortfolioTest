@@ -1,4 +1,13 @@
 extends adminlayout
+
+block tabs
+	ul.nav.nav-tabs
+		li.active
+			a(href="/folder")="Manage Folders"
+		li
+			a(href="/admin")="View Folders"
+		li
+			a(href="/adminAlbum")="Manage Albums"
 block content
 	h1=title
 	h3=subtitle
