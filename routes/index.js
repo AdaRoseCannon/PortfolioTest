@@ -135,8 +135,7 @@ exports.generate = function(req, res){
 		.drawLine(0, 0, size.width, size.height)
 		.drawLine(0, size.height, size.width, 0)
 		.fontSize(56)
-		.quality(options.quality)
-		//.drawText(20, 30, "GMagick!", "Center")
+		.quality(100)
 		.write(largeName, function (err) {
 			if (!err) {
 				exec("composite -dissolve 40% -gravity center " + watermark + "  " + largeName + "  " + largeName, function (error, stdout, stderr) {

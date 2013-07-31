@@ -11,14 +11,13 @@ block content
 	h1=title
 	h3=subtitle
 	div.container.col-12.col-lg-6
-		div.panel.list-group
+		div.panel
 			div.panel-heading
 				="Folder"
-			a.list-group-item(id="newFolder")
-				span.glyphicon.glyphicon-plus=" New Folder"
-			- each file in files
-				a.list-group-item.selectFolder
-					label.glyphicon.glyphicon-folder-close=" " + file.name
+			div.list-group
+				- each file in files
+					a.list-group-item.selectFolder
+						label.glyphicon.glyphicon-folder-close=" " + file.name
 		div.panel
 			div.panel-heading
 				="Folder Contents "
@@ -27,6 +26,9 @@ block content
 		div.panel
 			div.panel-heading
 				="Albums"
+			div.list-group
+				a.list-group-item(id="newFolder")
+					span.glyphicon.glyphicon-plus=" New Album"
 		div.panel
 			div.panel-heading
 				="Album Contents "
