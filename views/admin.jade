@@ -1,16 +1,16 @@
 extends adminlayout
 block content
 	div.row
-		- if (folder != "")
-			div.col-12.col-lg-6
-				h1=title
-				h3=subtitle
+		div.col-12.col-lg-6
+			h1=title
+			h3=subtitle
+			- if (folder != "")
 				hr
 				h1=folder
+		- if (folder != "")
 			div.col-12.col-lg-6
-				div.well.well-large
-					center
-						h3="Drag files here"
+					div.well.well-large
+						h3.text-center="Drag files here"
 	div.row
 		- each file in files
 			div.col-lg-3
