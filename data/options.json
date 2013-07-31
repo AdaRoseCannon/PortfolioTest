@@ -1,3 +1,18 @@
 {
-	"quality":80
+	"aname":{
+		"name":"Artist Name",
+		"value":"Me",
+		"description": "The name of the portfolio"
+	},
+	"name":{
+		"title":"Portfolio Title",
+		"value":"My Portfolio",
+		"description": "The name of the portfolio"
+	},
+	"quality":{
+		"name": "Quality",
+		"value": 80,
+		"description": "The quality of the images produced.",
+		"options": {"100%":100,"80%":80,"60%":60, "40%":40}
+	}
 }
