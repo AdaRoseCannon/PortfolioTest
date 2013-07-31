@@ -60,6 +60,23 @@ exports.folder = function(req, res){
 	res.render('folder', renderVars);
 };
 
+exports.adminAlbum = function(req, res){
+	var rootPath = fs.realpathSync(__dirname + "/../data/");
+	var targetFolder = rootPath + "/thumbs/";
+	var dataFile = targetFolder + "/" + "index.json";
+	var renderVars = {
+		title: 'Portfolio Site',
+		subtitle: 'Admin Page'
+	};
+	var ls = fs.readdirSync(__dirname + "/../data/raw/");
+	for (var i in ls) {
+		var t = fs.statSync(__dirname + "/../data/raw/" + ls[i]);
+		ls[i] = {name: ls[i], isFile: t.isFile(), isDirectory: t.isDirectory()};
+	}
+	renderVars.files = ls;
+	res.render('adminAlbum', renderVars);
+};
+
 exports.generate = function(req, res){
 	var folder = req.query.folder.toLowerCase();
 	var file = req.query.file;

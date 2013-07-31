@@ -1,0 +1,25 @@
+extends adminlayout
+block content
+	h1=title
+	h3=subtitle
+	div.container.col-12.col-lg-6
+		div.panel.list-group
+			div.panel-heading
+				="Folder"
+			a.list-group-item(id="newFolder")
+				span.glyphicon.glyphicon-plus=" New Folder"
+			- each file in files
+				a.list-group-item.selectFolder
+					label.glyphicon.glyphicon-folder-close=" " + file.name
+		div.panel
+			div.panel-heading
+				="Folder Contents "
+				em="Click and Drag"
+	div.container.col-12.col-lg-6
+		div.panel
+			div.panel-heading
+				="Albums"
+		div.panel
+			div.panel-heading
+				="Album Contents "
+				em="Click and Drag"

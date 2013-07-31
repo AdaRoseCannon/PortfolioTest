@@ -47,6 +47,8 @@ app.get('/admin', routes.admin);
 
 app.get('/folder', routes.folder);
 
+app.get('/adminAlbum', routes.adminAlbum);
+
 app.get('/generate', routes.generate);
 
 app.get('/users', user.list);
