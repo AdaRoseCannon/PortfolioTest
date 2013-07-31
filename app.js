@@ -57,9 +57,14 @@ app.get('/options', routes.options);
 app.get('/users', user.list);
 
 var optionsPath = __dirname + "/data/options.json";
+var optionsBackupPath = __dirname + "/lib/javascript/options.json";
 if (!fs.existsSync(optionsPath)) {
-  var optionsBackupPath = __dirname + "/lib/javascript/options.json";
   fs.createReadStream(optionsBackupPath).pipe(fs.createWriteStream(optionsPath));
+} else {
+  var optionsTemplate = require(optionsBackupPath);
+  var optionsTemplate = require(optionsPath);
+  //todo: check everything in the template is present in the users option file.
+
 }
 
 app.get('*', function (req,res) {
