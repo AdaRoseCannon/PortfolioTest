@@ -8,6 +8,7 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
+  , fs = require('fs')
   , browserify_express = require('browserify-express');
 
 var app = express();
@@ -31,10 +32,10 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
-app.use(app.router);
 app.use(require('stylus').middleware(__dirname + '/public'));
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(bundle);
+app.use(express.static(__dirname, '/public'));
+app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
@@ -52,6 +53,16 @@ app.get('/adminAlbum', routes.adminAlbum);
 app.get('/generate', routes.generate);
 
 app.get('/users', user.list);
+
+app.get('*', function (req,res) {
+  var publicURL = __dirname + '/public/' + req.url;
+  if (fs.existsSync(publicURL)) {
+    res.sendfile(publicURL);
+  } else {
+    res.render('404');
+  }
+});
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -1,6 +1,15 @@
 extends header
 
 block body
-	block tabs
+	- var nav = {"/folder":"Manage Folders","/admin":"View Folders","/adminAlbum":"Manage Albums","/options":"Options"}
+	ul.nav.nav-tabs
+		- for (key in nav) {
+			- if (key == url)
+				li.active
+					a(href=key)=nav[key]
+			- if (key != url)
+				li
+					a(href=key)=nav[key]
+		- }
 	div.container
 			block content

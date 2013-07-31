@@ -6,6 +6,7 @@ var fs = require('fs');
 var gm   = require('gm');
 var sys = require('sys')
 var exec = require('child_process').exec;
+var url = require('url');
 function puts(error, stdout, stderr) { sys.puts(stdout) }
 
 exports.index = function(req, res){
@@ -28,7 +29,8 @@ exports.admin = function(req, res){
 	var renderVars = {
 		title: 'Portfolio Site',
 		subtitle: 'Admin Page',
-		folder: folder
+		folder: folder,
+		url: url.parse(req.url).pathname
 	};
 	var ls = fs.readdirSync(__dirname + "/../data/raw/" + folder + "/");
 	for (var i in ls) {
@@ -49,7 +51,8 @@ exports.folder = function(req, res){
 	var dataFile = targetFolder + "/" + "index.json";
 	var renderVars = {
 		title: 'Portfolio Site',
-		subtitle: 'Admin Page'
+		subtitle: 'Admin Page',
+		url: url.parse(req.url).pathname
 	};
 	var ls = fs.readdirSync(__dirname + "/../data/raw/");
 	for (var i in ls) {
@@ -66,7 +69,8 @@ exports.adminAlbum = function(req, res){
 	var dataFile = targetFolder + "/" + "index.json";
 	var renderVars = {
 		title: 'Portfolio Site',
-		subtitle: 'Admin Page'
+		subtitle: 'Admin Page',
+		url: url.parse(req.url).pathname
 	};
 	var ls = fs.readdirSync(__dirname + "/../data/raw/");
 	for (var i in ls) {
