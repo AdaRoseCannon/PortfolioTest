@@ -52,6 +52,8 @@ app.get('/adminAlbum', routes.adminAlbum);
 
 app.get('/generate', routes.generate);
 
+app.get('/options', routes.options);
+
 app.get('/users', user.list);
 
 app.get('*', function (req,res) {

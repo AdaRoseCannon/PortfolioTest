@@ -51,7 +51,7 @@ exports.folder = function(req, res){
 	var dataFile = targetFolder + "/" + "index.json";
 	var renderVars = {
 		title: 'Portfolio Site',
-		subtitle: 'Admin Page',
+		subtitle: 'Admin Page - Folder Manage',
 		url: url.parse(req.url).pathname
 	};
 	var ls = fs.readdirSync(__dirname + "/../data/raw/");
@@ -69,7 +69,7 @@ exports.adminAlbum = function(req, res){
 	var dataFile = targetFolder + "/" + "index.json";
 	var renderVars = {
 		title: 'Portfolio Site',
-		subtitle: 'Admin Page',
+		subtitle: 'Admin Page - Album Sort',
 		url: url.parse(req.url).pathname
 	};
 	var ls = fs.readdirSync(__dirname + "/../data/raw/");
@@ -79,6 +79,17 @@ exports.adminAlbum = function(req, res){
 	}
 	renderVars.files = ls;
 	res.render('adminAlbum', renderVars);
+};
+
+exports.options =  function(req, res){
+	var rootPath = fs.realpathSync(__dirname + "/../data/");
+	var renderVars = {
+		title: 'Portfolio Site',
+		subtitle: 'Admin Page - Options',
+		url: url.parse(req.url).pathname,
+		options: require (rootPath + "/options.json")
+	};
+	res.render('options', renderVars);
 };
 
 exports.generate = function(req, res){

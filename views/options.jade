@@ -3,17 +3,22 @@ extends adminlayout
 block content
 	h1=title
 	h3=subtitle
-	div.row
-		div.panel.col-12.col-lg-7
-			div.panel-heading
-				="Folder Manage"
-			div.well.well-large
-				h3.text-center="Drag files here"
-		div.col-12.col-lg-5
-			h3="Select Folder"
-			div.list-group
-				a.list-group-item(id="newFolder")
-					span.glyphicon.glyphicon-plus=" New Folder"
-				- each file in files
-					a.list-group-item.active.selectFolder
-						label.glyphicon.glyphicon-folder-close=" " + file.name
+	ul.list-group
+		- each option in options
+			li.list-group-item
+				div.row
+					div.col-7.col-lg-7
+						h3
+							=option.name
+							=": "
+						p=option.description
+					div.col-5.col-lg-5.text-right
+						- if (option.options)
+							div.btn-group
+								-for (opt in option.options)
+									- if(option.options[opt] == option.value)
+										button.btn.btn-primary=opt
+									- else
+										button.btn.btn-default=opt
+						- else
+							h3=option.value
