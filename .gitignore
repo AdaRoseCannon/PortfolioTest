@@ -2,6 +2,7 @@
 # Install using npm install #
 #############################
 node_modules/
+data/raw
 
 # Logs and databases #
 ######################

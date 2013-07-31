@@ -56,6 +56,12 @@ app.get('/options', routes.options);
 
 app.get('/users', user.list);
 
+var optionsPath = __dirname + "/data/options.json";
+if (!fs.existsSync(optionsPath)) {
+  var optionsBackupPath = __dirname + "/lib/javascript/options.json";
+  fs.createReadStream(optionsBackupPath).pipe(fs.createWriteStream(optionsPath));
+}
+
 app.get('*', function (req,res) {
   var publicURL = __dirname + '/public/' + req.url;
   if (fs.existsSync(publicURL)) {
