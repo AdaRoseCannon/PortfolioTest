@@ -1,3 +1,25 @@
+JSON.flatStringify = function (object) {
+	var output = '';
+	for (var property in object) {
+		if (true) {
+			output += property;
+			if (object[property] && object[property].toString) {
+				if (object[property].toString() === "[object Object]") {
+					try {
+						output += ": " + JSON.stringify(object[property]);
+					}
+					catch (e) {
+						output += ": " + object[property].toString() + " could not stringify";
+					}
+				} else {
+					output += ": " + object[property].toString();
+				}
+			}
+			output += "\n";
+		}
+	}
+	return output;
+};
 
 /*
  * GET home page.
@@ -15,25 +37,27 @@ exports.index = function(req, res){
 exports.upload = function (req, res) {
 	var rawPath = fs.realpathSync(__dirname + "/../data/raw/");
 
-	for (file in req.files) {
-		fs.readFile(req.files[file].path, function (err, data) {
-			var newPath = __dirname + rawPath + req.query.folder + "/" + req.files[file].name;
-			fs.writeFile(newPath, data, function (err) {
-				console.log("Error Uploading file");
-			});
-		});
-	}
 
-	if (req.query.folder) {
-		var folder = req.query.folder;
-		var file = req.files[file].name;
-		generateImage (folder, file, function (result) {
-			if (result.success) {
-				res.json(result);
-			} else {
-				console.log("Error");
-			}
-		});
+	if (req.body.folder) {
+		var folder = req.body.folder;
+
+		for (file in req.files) {
+			fs.readFile(req.files[file].path, function (err, data) {
+				var newPath = rawPath + "/" + folder + "/" + req.files[file].name;
+				console.log ("Moving: " + req.files[file].path + " =>>>>> " + newPath);
+				fs.writeFile(newPath, data, function (err) {
+					if (err) console.log("Error Uploading file");
+					var filename = req.files[file].name;
+					generateImage (folder, filename, function (result) {
+						if (result.success) {
+							res.json(result);
+						} else {
+							console.log("Error");
+						}
+					});
+				});
+			});
+		}
 	} else {
 		res.json({error: "Folder is undefined"});
 	}
