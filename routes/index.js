@@ -144,22 +144,25 @@ exports.generate = function(req, res){
 	.resize(1536,1152)
 	.noProfile()
 	.size(function (err, size) {
-
-		this.fill("rgba(255,255,255,0.5)", 1)
-		.compose("Plus")
+		this.fill("rgba(255,255,255,0.4)", 1)
 		.drawLine(0, 0, size.width, size.height)
-		.drawLine(0, size.height, size.width, 0)
+		.drawLine(size.width, 0, 0, size.height)
 		.fontSize(56)
 		.quality(100)
 		.write(largeName, function (err) {
 			if (!err) {
-				exec("composite -dissolve 40% -gravity center " + watermark + "  " + largeName + "  " + largeName, function (error, stdout, stderr) {
-					fs.readFile(target, function(err, original_data){
-						var data = original_data.toString('base64');
-					    currentData[file.toLowerCase()].large=data;
+				exec("composite -dissolve 40% -gravity center -quality 100 " + watermark + "  " + largeName + "  " + largeName, function (error, stdout, stderr) {
+				    sys.puts(stdout);
+				    sys.puts(stderr);
+					exec("jpegoptim -f -m80 " + largeName, function (error, stdout, stderr) {
 					    sys.puts(stdout);
-						console.log('done: '+ largeName);
-						writeFiles();
+					    sys.puts(stderr);
+						fs.readFile(target, function(err, original_data){
+							var data = original_data.toString('base64');
+						    currentData[file.toLowerCase()].large=data;
+							console.log('done: '+ largeName);
+							writeFiles();
+						});
 					});
 				});
 			} else {
