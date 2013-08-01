@@ -62,9 +62,28 @@ if (!fs.existsSync(optionsPath)) {
   fs.createReadStream(optionsBackupPath).pipe(fs.createWriteStream(optionsPath));
 } else {
   var optionsTemplate = require(optionsBackupPath);
-  var optionsTemplate = require(optionsPath);
-  //todo: check everything in the template is present in the users option file.
+  var options = require(optionsPath);
+  // Check everything in the template is present in the users option file.
+  for (property in optionsTemplate) {
+    if (!options.hasOwnProperty(property)) {
+      options[property] = optionsTemplate[property];
+    }
+  }
 
+  // Remove obsolete properties
+  for (property in options) {
+    if (!optionsTemplate.hasOwnProperty(property)) {
+      options[property] = undefined;
+    }
+  }
+
+  //write to file
+  fs.writeFile(optionsPath, JSON.stringify(options, null, "\t"), function(err) {
+    if(err) {
+      console.log("Could not save JSON: " + optionsPath);
+      console.log(err);
+    }
+  });
 }
 
 app.get('*', function (req,res) {

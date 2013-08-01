@@ -1,5 +1,5 @@
 {
-	"aname":{
+	"username":{
 		"name":"Artist Name",
 		"value":"Me",
 		"description": "The name of the portfolio"
@@ -15,4 +15,5 @@
 		"description": "The quality of the images produced.",
 		"options": {"100%":100,"80%":80,"60%":60, "40%":40}
 	}
+	
 }
