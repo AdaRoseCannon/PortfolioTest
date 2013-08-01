@@ -33,9 +33,9 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
-app.use(require('stylus').middleware(__dirname + '/public'));
+app.use(express.static(__dirname, '/public'), { maxAge: 31557600000 });
+app.use(require('stylus').middleware(__dirname + '/public'), { maxAge: 31557600000 });
 app.use(bundle);
-app.use(express.static(__dirname, '/public'));
 app.use(app.router);
 
 // development only
@@ -90,6 +90,7 @@ if (!fs.existsSync(optionsPath)) {
 app.get('*', function (req,res) {
   var publicURL = __dirname + '/public/' + req.url;
   if (fs.existsSync(publicURL)) {
+    res.setHeader("Cache-Control", "max-age=31556926");
     res.sendfile(publicURL);
   } else {
     res.status(404);

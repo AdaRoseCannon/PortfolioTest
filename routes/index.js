@@ -8,6 +8,7 @@ var generateImage = require('./generateImage');
 
 
 exports.index = function(req, res){
+	res.setHeader("Cache-Control", "max-age=31556926");
 	res.render('index', { title: 'Portfolio Site' });
 };
 
