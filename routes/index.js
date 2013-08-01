@@ -12,12 +12,39 @@ exports.index = function(req, res){
 	res.render('index', { title: 'Portfolio Site' });
 };
 
+exports.upload = function (req, res) {
+	var rawPath = fs.realpathSync(__dirname + "/../data/raw/");
+
+	for (file in req.files) {
+		fs.readFile(req.files[file].path, function (err, data) {
+			var newPath = __dirname + rawPath + req.query.folder + "/" + req.files[file].name;
+			fs.writeFile(newPath, data, function (err) {
+				console.log("Error Uploading file");
+			});
+		});
+	}
+
+	if (req.query.folder) {
+		var folder = req.query.folder;
+		var file = req.files[file].name;
+		generateImage (folder, file, function (result) {
+			if (result.success) {
+				res.json(result);
+			} else {
+				console.log("Error");
+			}
+		});
+	} else {
+		res.json({error: "Folder is undefined"});
+	}
+};
+
 exports.admin = function(req, res){
 	var folder = "";
 	if (req.query.folder) folder = req.query.folder;
 
-	var rootPath = fs.realpathSync(__dirname + "/../data/");
-	var targetFolder = rootPath + "/thumbs/" + folder.toLowerCase();
+	var dataPath = fs.realpathSync(__dirname + "/../data/");
+	var targetFolder = dataPath + "/thumbs/" + folder.toLowerCase();
 	var dataFile = targetFolder + "/" + "index.json";
 
 	var currentData = {};
@@ -45,8 +72,8 @@ exports.admin = function(req, res){
 };
 
 exports.folder = function(req, res){
-	var rootPath = fs.realpathSync(__dirname + "/../data/");
-	var targetFolder = rootPath + "/thumbs/";
+	var dataPath = fs.realpathSync(__dirname + "/../data/");
+	var targetFolder = dataPath + "/thumbs/";
 	var dataFile = targetFolder + "/" + "index.json";
 	var renderVars = {
 		title: 'Portfolio Site',
@@ -63,8 +90,8 @@ exports.folder = function(req, res){
 };
 
 exports.adminAlbum = function(req, res){
-	var rootPath = fs.realpathSync(__dirname + "/../data/");
-	var targetFolder = rootPath + "/thumbs/";
+	var dataPath = fs.realpathSync(__dirname + "/../data/");
+	var targetFolder = dataPath + "/thumbs/";
 	var dataFile = targetFolder + "/" + "index.json";
 	var renderVars = {
 		title: 'Portfolio Site',
@@ -81,12 +108,12 @@ exports.adminAlbum = function(req, res){
 };
 
 exports.options =  function(req, res){
-	var rootPath = fs.realpathSync(__dirname + "/../data/");
+	var dataPath = fs.realpathSync(__dirname + "/../data/");
 	var renderVars = {
 		title: 'Portfolio Site',
 		subtitle: 'Admin Page - Options',
 		url: url.parse(req.url).pathname,
-		options: require (rootPath + "/options.json")
+		options: require (dataPath + "/options.json")
 	};
 	res.render('options', renderVars);
 };

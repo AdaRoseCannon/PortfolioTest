@@ -18,7 +18,7 @@ var bundle = browserify_express({
     watch: __dirname + '/lib/javascript/',
     mount: '/js/_javascript.js',
     verbose: true,
-    minify: true,
+    minify: false,
     bundle_opts: { debug: true } // enable inline sourcemap on js files 
 });
 
@@ -54,6 +54,8 @@ app.get('/adminAlbum', routes.adminAlbum);
 app.get('/generate', routes.generate);
 
 app.get('/options', routes.options);
+
+app.post('/upload', routes.upload);
 
 app.get('/users', user.list);
 
