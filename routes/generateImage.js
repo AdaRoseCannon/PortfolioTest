@@ -1,5 +1,4 @@
 
-
 function generateImage (folder, file, callback) {
 	var sys = require('sys');
 	var exec = require('child_process').exec;
@@ -52,10 +51,21 @@ function generateImage (folder, file, callback) {
 	currentData[file.toLowerCase()]={};
 
 	gm(inputFile).autoOrient()
-	.resize(1536,1152)
-	.noProfile()
-	.size(function (err, size) {
+	.size(function (err, size1) {
+		var newSize = {width: 1536, height: 1152};
+		var size = {};
+		if (size1.width>newSize.width || size1.height>newSize.height) {
+			this.resize(newSize.width,newSize.height);
+			if (size1.width/newSize.width > size1.height/newSize.height){
+				size.width=newSize.width;
+				size.height=newSize.height*(newSize.width/size1.width);
+			} else {
+				size.height=newSize.height;
+				size.width=newSize.width*(newSize.height/size1.height);
+			}
+		}
 		this.fill("rgba(255,255,255,0.4)", 1)
+		.noProfile()
 		.drawLine(0, 0, size.width, size.height)
 		.drawLine(size.width, 0, 0, size.height)
 		.fontSize(56)
