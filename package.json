@@ -9,6 +9,7 @@
     "express": "3.x",
     "gm": "*",
     "stylus": "*",
-    "jade": "*"
+    "jade": "*",
+    "nib": "*"
   }
 }

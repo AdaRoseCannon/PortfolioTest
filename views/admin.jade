@@ -14,7 +14,7 @@ block content
 		- if (folder != "")
 			br
 			div.col-12.col-lg-6
-				div.well.well-large.upload-files
+				div.well.upload-files
 					h3.text-center="Drag files here"
 	div.row
 		- each file in files
@@ -26,7 +26,7 @@ block content
 								p=file.name
 					- if (file.isFile)
 						-if (file.thumbExists)
-							img(src="data:image/jpg;base64,"+file.thumb)
+							img(src=file.thumb)
 							p=file.name
 						- else
 							a.generateLink(data-value="/generate?folder="+folder+"&file="+file.name, href="#")

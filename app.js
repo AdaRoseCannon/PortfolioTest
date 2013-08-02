@@ -9,7 +9,9 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , fs = require('fs')
-  , browserify_express = require('browserify-express');
+  , browserify_express = require('browserify-express')
+  , stylus = require('stylus')
+  , nib = require('nib');
 
 var app = express();
 
@@ -21,6 +23,13 @@ var bundle = browserify_express({
     minify: false,
     bundle_opts: { debug: true } // enable inline sourcemap on js files 
 });
+
+function compile(str, path) {
+  return stylus(str)
+    .set('filename', path)
+    .set('compress', true)
+    .use(nib());
+}
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -34,7 +43,7 @@ app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
 app.use(express.static(__dirname, '/public'), { maxAge: 31557600000 });
-app.use(require('stylus').middleware(__dirname + '/public'), { maxAge: 31557600000 });
+app.use(stylus.middleware({src: __dirname + "/public", compile: compile}), { maxAge: 31557600000 });
 app.use(bundle);
 app.use(app.router);
 

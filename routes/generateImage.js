@@ -15,6 +15,7 @@ function generateImage (folder, file, callback) {
 	var largeName = target.replace(/(\.[\w\d_-]+)$/i, '_large$1');
 	var watermark = dataPath + "/watermark.png";
 	var imagesToGen = 2;
+	var currentData = {};
 
 	function writeFiles() {
 		imagesToGen--;
@@ -42,8 +43,6 @@ function generateImage (folder, file, callback) {
 		return;
 	}
 
-
-	var currentData = {};
 	if (fs.existsSync(dataFile)){
 		currentData = require(dataFile);
 	}
@@ -82,7 +81,7 @@ function generateImage (folder, file, callback) {
 					    sys.puts(stdout);
 					    sys.puts(stderr);
 						fs.readFile(target, function(err, original_data){
-							var data = original_data.toString('base64');
+							var data = "data:image/" + largeName.split('.').pop() + ";base64," + original_data.toString('base64');
 						    currentData[file.toLowerCase()].large=data;
 							console.log('done: '+ largeName);
 							writeFiles();
@@ -102,7 +101,7 @@ function generateImage (folder, file, callback) {
 		if (!err) {
 			console.log('done: '+ inputFile);
 			fs.readFile(target, function(err, original_data){
-				var data = original_data.toString('base64');
+				var data = "data:image/" + target.split('.').pop() + ";base64," + original_data.toString('base64');
 			    currentData[file.toLowerCase()].thumb=data;
 				writeFiles();
 			    callback({success: data});
