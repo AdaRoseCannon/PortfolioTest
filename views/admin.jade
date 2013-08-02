@@ -29,6 +29,6 @@ block content
 							img(src=file.thumb)
 							p=file.name
 						- else
-							a.generateLink(data-value="/generate?folder="+folder+"&file="+file.name, href="#")
+							a.generateLink(data-value="/generate?folder="+folder+"&file="+file.name, href="#", onclick="return false")
 								img(data-src="holder.js/300x200")
 								p=file.name

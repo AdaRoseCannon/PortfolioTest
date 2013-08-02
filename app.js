@@ -47,26 +47,31 @@ app.use(stylus.middleware({src: __dirname + "/public", compile: compile}), { max
 app.use(bundle);
 app.use(app.router);
 
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-}
 
 app.get('/', routes.index);
 
-app.get('/admin', routes.admin);
 
-app.get('/folder', routes.folder);
+// development only
+if ('development' == app.get('env')) {
+  app.use(express.errorHandler());
 
-app.get('/adminAlbum', routes.adminAlbum);
+  app.get('/admin', routes.admin);
 
-app.get('/generate', routes.generate);
+  app.get('/folder', routes.folder);
 
-app.get('/options', routes.options);
+  app.get('/adminAlbum', routes.adminAlbum);
 
-app.post('/upload', routes.upload);
+  app.get('/generate', routes.generate);
 
-app.get('/users', user.list);
+  app.get('/options', routes.options);
+
+  app.get('/newfolder', routes.newfolder);
+
+  app.get('/users', user.list);
+
+  app.post('/upload', routes.upload);
+
+}
 
 var optionsPath = __dirname + "/data/options.json";
 var optionsBackupPath = __dirname + "/lib/javascript/options.json";

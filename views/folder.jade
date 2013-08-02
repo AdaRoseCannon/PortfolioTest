@@ -12,8 +12,11 @@ block content
 		div.col-12.col-lg-5
 			h3="Select Folder"
 			div.list-group
-				a.list-group-item(id="newFolder")
-					span.glyphicon.glyphicon-plus=" New Folder"
+				div.list-group-item
+					div.input-group
+						input#newfoldername.form-control(type="text", placeholder="New Folder Name")
+						span.input-group-addon.glyphicon.glyphicon-plus
+							a.new-folder(href="#", onclick="return false")=" New Folder"
 				- each file in files
-					a.list-group-item.active.selectFolder
+					a.list-group-item.selectFolder(href="#", onclick="return false", data-folder=file.name)
 						label.glyphicon.glyphicon-folder-close=" " + file.name
