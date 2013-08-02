@@ -53,23 +53,26 @@ function generateImage (folder, file, callback) {
 	gm(inputFile).autoOrient()
 	.size(function (err, size1) {
 		var newSize = {width: 1536, height: 1152};
-		var size = {};
+		var size = size1;
 		if (size1.width>newSize.width || size1.height>newSize.height) {
-			this.resize(newSize.width,newSize.height);
+			var scale;
 			if (size1.width/newSize.width > size1.height/newSize.height){
-				size.width=newSize.width;
-				size.height=newSize.height*(newSize.width/size1.width);
+				scale = (newSize.width/size.width);
 			} else {
-				size.height=newSize.height;
-				size.width=newSize.width*(newSize.height/size1.height);
+				scale = (newSize.width/size.width);
 			}
+			size.height*=scale;
+			size.width*=scale;
+			this.resize(newSize.width, newSize.height);
 		}
+		console.log (size);
 		this.fill("rgba(255,255,255,0.4)", 1)
 		.noProfile()
 		.drawLine(0, 0, size.width, size.height)
 		.drawLine(size.width, 0, 0, size.height)
 		.fontSize(56)
 		.quality(100)
+		.autoOrient()
 		.write(largeName, function (err) {
 			if (!err) {
 				exec("composite -dissolve 40% -gravity center -quality 100 " + watermark + "  " + largeName + "  " + largeName, function (error, stdout, stderr) {
