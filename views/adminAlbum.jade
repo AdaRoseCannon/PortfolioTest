@@ -13,16 +13,18 @@ block content
 		div.panel
 			div.panel-heading
 				="Folder Contents "
-				em="Click and Drag"
+				em="Click and drag pictures from here"
 			div.list-group#folder-contents
 	div.container.col-12.col-lg-6
 		div.panel
 			div.panel-heading
 				="Albums"
 			div.list-group
-				a.list-group-item(id="newFolder")
-					span.glyphicon.glyphicon-plus=" New Album"
-		div.panel
+					div.input-group
+						input#newalbumname.form-control(type="text", placeholder="New Album Name")
+						span.input-group-addon.glyphicon.glyphicon-plus
+							a.new-album(href="#", onclick="return false")=" New Album"
+		div.panel.well
 			div.panel-heading
 				="Album Contents "
-				em="Click and Drag"
+				em="Click and drag pictures to here."
