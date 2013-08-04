@@ -31,9 +31,6 @@ module.exports = function(req, res){
 		}
 	}
 	renderVars.files = ls;
-	if (req.headers.accept && req.headers.accept.indexOf("application/json")!== -1) {
-		res.json(renderVars);
-		return;
-	}
-	res.render('admin', renderVars);
+	renderVars.jade = 'admin';
+	return renderVars;
 };

@@ -9,9 +9,6 @@ module.exports = function(req, res){
 		url: url.parse(req.url).pathname,
 		options: require (dataPath + "/options.json")
 	};
-	if (req.headers.accept && req.headers.accept.indexOf("application/json")!== -1) {
-		res.json(renderVars);
-		return;
-	}
-	res.render('options', renderVars);
+	renderVars.jade = 'options';
+	return renderVars;
 };

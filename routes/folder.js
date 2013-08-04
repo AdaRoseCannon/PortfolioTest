@@ -17,9 +17,6 @@ module.exports = function(req, res){
 		ls[i] = {name: ls[i], isFile: t.isFile(), isDirectory: t.isDirectory()};
 	}
 	renderVars.files = ls;
-	if (req.headers.accept && req.headers.accept.indexOf("application/json")!== -1) {
-		res.json(renderVars);
-		return;
-	}
-	res.render('folder', renderVars);
+	renderVars.jade = 'folder';
+	return renderVars;
 };
