@@ -5,3 +5,4 @@ img{max-width:100%;height:auto !important}
 .file:before{content:"";position:absolute;top:0;right:0;border-width:1em;border-style:solid;border-color:transparent transparent #658e15 #658e15;background:transparent;-webkit-box-shadow:0 1px 1px rgba(0,0,0,0.3),-1px 1px 1px rgba(0,0,0,0.2);-moz-box-shadow:0 1px 1px rgba(0,0,0,0.3),-1px 1px 1px rgba(0,0,0,0.2);-webkit-box-shadow:0 1px 1px rgba(0,0,0,0.3),-1px 1px 1px rgba(0,0,0,0.2);box-shadow:0 1px 1px rgba(0,0,0,0.3),-1px 1px 1px rgba(0,0,0,0.2)}
 .file>div{margin:.2em;color:#77a00f;text-shadow:0 2px 3px #a7d03f;height:1em}
 .file>img{max-width:100px;max-height:100px;width:auto;height:auto;display:block;background:#fff}
+.inline-thumb{max-width:64px;max-height:64px;width:auto;height:auto;display:inline}
