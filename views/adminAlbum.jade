@@ -8,7 +8,7 @@ block content
 				="Folder"
 			div.list-group
 				- each file in files
-					a.list-group-item.selectFolder(href="#", onclick="return false", data-folder=file.name)
+					a.list-group-item.openFolder(href="#", onclick="return false", data-folder=file.name)
 						label.glyphicon.glyphicon-folder-close=" " + file.name
 		div.panel
 			div.panel-heading

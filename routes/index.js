@@ -31,7 +31,12 @@ var generateImage = require('./generateImage');
 
 exports.index = function(req, res){
 	res.setHeader("Cache-Control", "max-age=31556926");
-	res.render('index', { title: 'Portfolio Site' });
+	var renderVars = { title: 'Portfolio Site' };
+	if (req.headers.accept && req.headers.accept.indexOf("application/json")!== -1) {
+		res.json(renderVars);
+		return;
+	}
+	res.render('index', renderVars);
 };
 
 exports.upload = function (req, res) {
@@ -64,6 +69,7 @@ exports.upload = function (req, res) {
 };
 
 exports.admin = function(req, res){
+
 	var folder = "";
 	if (req.query.folder) folder = req.query.folder;
 
@@ -92,6 +98,10 @@ exports.admin = function(req, res){
 		}
 	}
 	renderVars.files = ls;
+	if (req.headers.accept && req.headers.accept.indexOf("application/json")!== -1) {
+		res.json(renderVars);
+		return;
+	}
 	res.render('admin', renderVars);
 };
 
@@ -110,6 +120,10 @@ exports.folder = function(req, res){
 		ls[i] = {name: ls[i], isFile: t.isFile(), isDirectory: t.isDirectory()};
 	}
 	renderVars.files = ls;
+	if (req.headers.accept && req.headers.accept.indexOf("application/json")!== -1) {
+		res.json(renderVars);
+		return;
+	}
 	res.render('folder', renderVars);
 };
 
@@ -128,6 +142,10 @@ exports.adminAlbum = function(req, res){
 		ls[i] = {name: ls[i], isFile: t.isFile(), isDirectory: t.isDirectory()};
 	}
 	renderVars.files = ls;
+	if (req.headers.accept && req.headers.accept.indexOf("application/json")!== -1) {
+		res.json(renderVars);
+		return;
+	}
 	res.render('adminAlbum', renderVars);
 };
 
@@ -139,6 +157,10 @@ exports.options =  function(req, res){
 		url: url.parse(req.url).pathname,
 		options: require (dataPath + "/options.json")
 	};
+	if (req.headers.accept && req.headers.accept.indexOf("application/json")!== -1) {
+		res.json(renderVars);
+		return;
+	}
 	res.render('options', renderVars);
 };
 

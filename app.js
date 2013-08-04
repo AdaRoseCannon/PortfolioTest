@@ -11,7 +11,8 @@ var express = require('express')
   , fs = require('fs')
   , browserify_express = require('browserify-express')
   , stylus = require('stylus')
-  , nib = require('nib');
+  , nib = require('nib')
+  , url = require('url');
 
 var app = express();
 
@@ -48,31 +49,6 @@ app.use(bundle);
 app.use(app.router);
 
 
-app.get('/', routes.index);
-
-
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-
-  app.get('/admin', routes.admin);
-
-  app.get('/folder', routes.folder);
-
-  app.get('/adminAlbum', routes.adminAlbum);
-
-  app.get('/generate', routes.generate);
-
-  app.get('/options', routes.options);
-
-  app.get('/newfolder', routes.newfolder);
-
-  app.get('/users', user.list);
-
-  app.post('/upload', routes.upload);
-
-}
-
 var optionsPath = __dirname + "/data/options.json";
 var optionsBackupPath = __dirname + "/lib/javascript/options.json";
 if (!fs.existsSync(optionsPath)) {
@@ -103,7 +79,28 @@ if (!fs.existsSync(optionsPath)) {
   });
 }
 
+app.get('/', routes.index);
+
+app.get('/users', user.list);
+
+// development only
+if ('development' == app.get('env')) {
+  app.use(express.errorHandler());
+  app.post('/upload', routes.upload);
+}
+
 app.get('*', function (req,res) {
+
+  // development only
+  if ('development' == app.get('env')) {
+    var docRequested = (url.parse(req.url).pathname).substring(1);
+    if (routes[docRequested] !== undefined) {
+      (routes[docRequested])(req,res);
+      return;
+    }
+  }
+
+
   var publicURL = __dirname + '/public/' + req.url;
   if (fs.existsSync(publicURL)) {
     res.setHeader("Cache-Control", "max-age=31556926");
