@@ -94,8 +94,8 @@ app.get('*', function (req,res) {
   // development only
   if ('development' == app.get('env')) {
     var docRequested = (url.parse(req.url).pathname).substring(1);
-    if (routes[docRequested] !== undefined) {
-      (routes[docRequested])(req,res);
+    if (routes.exists(docRequested)) {
+      routes.load(docRequested,req,res);
       return;
     }
   }
