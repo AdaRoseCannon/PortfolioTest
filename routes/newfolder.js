@@ -1,5 +1,8 @@
+var fs = require('fs');
 
 module.exports = function(req, res){
+
+	var folder;
 	if (req.query.folder) folder = req.query.folder;
 		else  folder = req.body.folder;
 	var rawPath = fs.realpathSync(__dirname + "/../data/raw/");
