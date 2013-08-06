@@ -2,7 +2,7 @@
 var fs = require('fs');
 var url = require('url');
 
-module.exports = function(req, res){
+module.exports = function(req, res, callback){
 	var dataPath = fs.realpathSync(__dirname + "/../data/");
 	var targetFolder = dataPath + "/thumbs/";
 	var dataFile = targetFolder + "/" + "index.json";
@@ -18,5 +18,5 @@ module.exports = function(req, res){
 	}
 	renderVars.files = ls;
 	renderVars.jade = 'adminAlbum';
-	return renderVars;
+	callback(renderVars);
 };

@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-module.exports = function(req, res){
+module.exports = function(req, res, callback){
 
 	var folder;
 	if (req.query.folder) folder = req.query.folder;
@@ -10,10 +10,10 @@ module.exports = function(req, res){
 	if (!fs.existsSync(targetFolder)){
 		console.log ("Creating folder " + folder + " in: " + targetFolder);
 		fs.mkdir(targetFolder, function () {
-			res.json({success: folder});
+			callback({success: folder});
 		});
 	} else {
 		console.log(targetFolder + " exists already!")
-		res.json({failure: "folder exists"});
+		callback({err: "folder exists"});
 	}
 };

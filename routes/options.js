@@ -1,7 +1,7 @@
 
 var fs = require('fs');
 var url = require('url');
-module.exports = function(req, res){
+module.exports = function(req, res, callback){
 	var dataPath = fs.realpathSync(__dirname + "/../data/");
 	var renderVars = {
 		title: 'Portfolio Site',
@@ -10,5 +10,5 @@ module.exports = function(req, res){
 		options: require (dataPath + "/options.json")
 	};
 	renderVars.jade = 'options';
-	return renderVars;
+	callback(renderVars);
 };

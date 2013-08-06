@@ -1,4 +1,4 @@
-module.exports = function(req, res){
+module.exports = function(req, res, callback){
 	var album;
 	if (req.query.album) album = req.query.album;
 		else  album = req.body.album;
@@ -12,6 +12,8 @@ module.exports = function(req, res){
 				if(err) {
 					console.log("Could not save JSON: " + dataFile);
 					console.log(err);
+				} else {
+					callback({success: true});
 				}
 			});
 		});

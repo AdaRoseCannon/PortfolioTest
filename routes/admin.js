@@ -1,7 +1,7 @@
 
 var fs = require('fs');
 var url = require('url');
-module.exports = function(req, res){
+module.exports = function(req, res, callback){
 
 	var folder = "";
 	if (req.query.folder) folder = req.query.folder;
@@ -32,5 +32,5 @@ module.exports = function(req, res){
 	}
 	renderVars.files = ls;
 	renderVars.jade = 'admin';
-	return renderVars;
+	callback(renderVars);
 };

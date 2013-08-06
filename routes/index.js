@@ -5,12 +5,18 @@ var fs = require('fs');
 var generateImage = require('./generateImage');
 
 exports.load = function (docRequested,req,res) {
-	var renderVars = require ("./" + docRequested)(req,res);
-	if (req.headers.accept && req.headers.accept.indexOf("application/json")!== -1) {
-		res.json(renderVars);
-		return;
-	}
-	if(renderVars.jade) res.render(renderVars.jade, renderVars);
+	require ("./" + docRequested)(req,res, function (renderVars) {
+		if (req.headers.accept && req.headers.accept.indexOf("application/json")!== -1) {
+			console.log ("Sending JSON");
+			res.json(renderVars);
+			return;
+		}
+		if (!renderVars.jade) {
+			res.send(renderVars);
+			return;
+		}
+		if(renderVars.jade) res.render(renderVars.jade, renderVars);
+	});
 }
 
 exports.exists = function (name) {
