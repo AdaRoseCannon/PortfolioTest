@@ -25,6 +25,9 @@ block content
 						input#newalbumname.form-control(type="text", placeholder="New Album Name")
 						span.input-group-addon.glyphicon.glyphicon-plus
 							a.new-album(href="#", onclick="return false")=" New Album"
+				- each a in album
+					a.list-group-item.openAlbum(href="#", onclick="return false", data-album=a.album)
+						label.glyphicon.glyphicon-folder-close=" " + a.name
 		div.panel.well
 			div.panel-heading
 				="Album Contents "

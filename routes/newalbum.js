@@ -10,7 +10,7 @@ module.exports = function(req, res, callback){
 	var newName = album.replace(/([^\w\d\.\-_~,;:\[\]\(\]]|[\.]{2,})/gi, '').toLowerCase();
 
 	var albumPath = fs.realpathSync(__dirname + "/../data") + "/album/";
-	targetalbum = albumPath + "/" + newName + ".js";
+	targetalbum = albumPath + "/" + newName + ".json";
 
 	if (!fs.existsSync(albumPath)) {
 		fs.mkdirSync(albumPath)
