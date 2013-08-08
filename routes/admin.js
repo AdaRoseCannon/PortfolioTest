@@ -1,7 +1,10 @@
+/* jshint node:true */
+/* globals $ */
 
 var fs = require('fs');
 var url = require('url');
-module.exports = function(req, res, callback){
+module.exports = function (req, res, callback) {
+	'use strict';
 
 	var folder = "";
 	if (req.query.folder) folder = req.query.folder;
@@ -11,7 +14,7 @@ module.exports = function(req, res, callback){
 	var dataFile = targetFolder + "/" + "index.json";
 
 	var currentData = {};
-	if (fs.existsSync(dataFile)){
+	if (fs.existsSync(dataFile)) {
 		currentData = require(dataFile);
 	}
 

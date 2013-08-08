@@ -1,4 +1,8 @@
+/* jshint node:true */
+/* globals $ */
+
 module.exports = function (object) {
+	'use strict';
 	var output = '';
 	for (var property in object) {
 		if (true) {

@@ -1,8 +1,11 @@
+/* jshint node:true */
+/* globals $ */
 
 var fs = require('fs');
 var url = require('url');
 
-module.exports = function(req, res, callback){
+module.exports = function (req, res, callback) {
+	'use strict';
 	var dataPath = fs.realpathSync(__dirname + "/../data/");
 	var targetFolder = dataPath + "/thumbs/";
 	var dataFile = targetFolder + "/" + "index.json";

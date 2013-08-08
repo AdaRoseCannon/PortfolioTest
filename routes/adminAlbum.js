@@ -1,9 +1,11 @@
-
+/* jshint node:true */
+/* globals $ */
 
 var fs = require('fs');
 var urlparse = require('url').parse;
 
-module.exports = function(req, res, callback){
+module.exports = function (req, res, callback) {
+	'use strict';
 
 	var dataPath = fs.realpathSync(__dirname + "/../data/");
 	var targetFolder = dataPath + "/thumbs/";

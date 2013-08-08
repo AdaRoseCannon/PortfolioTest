@@ -1,8 +1,11 @@
+/* jshint node:true */
+/* globals $ */
 
 /*
  * GET users listing.
  */
 
-exports.list = function(req, res){
-  res.send("respond with a resource");
+exports.list = function (req, res) {
+	'use strict';
+	res.send("respond with a resource");
 };
