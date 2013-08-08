@@ -1,31 +1,33 @@
-
 /**
  * Module dependencies.
  */
 
-var express = require('express')
-	, routes = require('./routes')
-	, user = require('./routes/user')
-	, http = require('http')
-	, path = require('path')
-	, fs = require('fs')
-	, browserify_express = require('browserify-express')
-	, stylus = require('stylus')
-	, nib = require('nib')
-	, url = require('url');
+/* jshint node:true */
+
+var express = require('express'),
+	routes = require('./routes'),
+	user = require('./routes/user'),
+	http = require('http'),
+	path = require('path'),
+	fs = require('fs'),
+	browserify_express = require('browserify-express'),
+	stylus = require('stylus'),
+	nib = require('nib'),
+	url = require('url');
 
 var app = express();
 
 var bundle = browserify_express({
-		entry: __dirname + '/lib/javascript/index.js',
-		watch: __dirname + '/lib/javascript/',
-		mount: '/js/_javascript.js',
-		verbose: true,
-		minify: false,
-		bundle_opts: { debug: true } // enable inline sourcemap on js files 
+	entry: __dirname + '/lib/javascript/index.js',
+	watch: __dirname + '/lib/javascript/',
+	mount: '/js/_javascript.js',
+	verbose: true,
+	minify: false,
+	bundle_opts: { debug: true } // enable inline sourcemap on js files 
 });
 
 function compile(str, path) {
+	'use strict';
 	return stylus(str)
 		.set('filename', path)
 		.set('compress', true)
@@ -57,7 +59,7 @@ if (!fs.existsSync(optionsPath)) {
 	var optionsTemplate = require(optionsBackupPath);
 	var options = require(optionsPath);
 	// Check everything in the template is present in the users option file.
-	for (property in optionsTemplate) {
+	for (var property in optionsTemplate) {
 		if (!options.hasOwnProperty(property)) {
 			options[property] = optionsTemplate[property];
 		}
@@ -71,8 +73,9 @@ if (!fs.existsSync(optionsPath)) {
 	}
 
 	//write to file
-	fs.writeFile(optionsPath, JSON.stringify(options, null, "\t"), function(err) {
-		if(err) {
+	fs.writeFile(optionsPath, JSON.stringify(options, null, "\t"), function (err) {
+		'use strict';
+		if (err) {
 			console.log("Could not save JSON: " + optionsPath);
 			console.log(err);
 		}
@@ -84,18 +87,18 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 
 // development only
-if ('development' == app.get('env')) {
+if ('development' === app.get('env')) {
 	app.use(express.errorHandler());
 	app.post('/upload', routes.upload);
 }
 
-app.get('*', function (req,res) {
-
+app.get('*', function (req, res) {
+	'use strict';
 	// development only
-	if ('development' == app.get('env')) {
+	if ('development' === app.get('env')) {
 		var docRequested = (url.parse(req.url).pathname).substring(1);
 		if (routes.exists(docRequested)) {
-			routes.load(docRequested,req,res);
+			routes.load(docRequested, req, res);
 			return;
 		}
 	}
@@ -126,6 +129,7 @@ app.get('*', function (req,res) {
 });
 
 
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function () {
+	'use strict';
 	console.log('Express server listening on port ' + app.get('port'));
 });
