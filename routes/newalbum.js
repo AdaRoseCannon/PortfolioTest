@@ -21,7 +21,7 @@ module.exports = function(req, res, callback){
 			console.log("Could not save JSON: " + dataFile);
 			console.log(err);
 		} else {
-			callback({success: newName});
+			callback({success: currentData.name});
 		}
 	});
 };
